@@ -95,7 +95,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.post("/users/login", authenticateToken, async (req, res) => {
+app.post("/users/login", async (req, res) => {
   try {
     const user = await formUser.findOne({ name: req.body.name });
     if (!user) {
