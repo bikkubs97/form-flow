@@ -168,7 +168,7 @@ export default function Create() {
             className="hover:cursor-pointer text-blue-600 underline"
             onClick={handleCopyUrl}
           >
-            http://localhost:5173/forms/{id} (Click to Copy)
+            https://formflow-server.onrender.com/forms/{id} (Click to Copy)
           </span>
         </div>
       )}
