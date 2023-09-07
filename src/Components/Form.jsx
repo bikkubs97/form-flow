@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 export default function Form() {
   const { id } = useParams();
   const [template, setTemplate] = useState({
-    heading: "",  
+    heading: "",
     id: null,
     fields: [],
   });
@@ -14,7 +14,9 @@ export default function Form() {
 
   async function fetchTemplate() {
     try {
-      const res = await fetch(`https://formflow-server.onrender.com/form/${id}`);
+      const res = await fetch(
+        `https://formflow-server.onrender.com/form/${id}`
+      );
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -72,20 +74,24 @@ export default function Form() {
     <form onSubmit={handleSubmit} className="m-5 p-2">
       <div className="text-2xl font-bold mb-2">{template.heading}</div>
       <div className="p-1 m-2">
-        {template.fields?template.fields.map((item, index) => (
-          <div key={index}>
-            <label className="p-1 m-1">{item.name}</label>
-            <br />
-            <input
-              required={item.required}
-              name={item.name}
-              type={item.type}
-              value={formData[item.name] || ""}
-              onChange={handleChange}
-              className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
-            />
-          </div>
-        )):<p className="animate-pulse">Loading Form...</p>}
+        {template.fields.length > 0 ? (
+          template.fields.map((item, index) => (
+            <div key={index}>
+              <label className="p-1 m-1">{item.name}</label>
+              <br />
+              <input
+                required={item.required}
+                name={item.name}
+                type={item.type}
+                value={formData[item.name] || ""}
+                onChange={handleChange}
+                className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
+              />
+            </div>
+          ))
+        ) : (
+          <p className="animate-pulse">Loading Form...</p>
+        )}
       </div>
       <button
         type="submit"
@@ -93,7 +99,11 @@ export default function Form() {
       >
         Submit
       </button>
-      {formSubmitted && <p className="m-2 text-green-600 font-bold text-xl">Form data submitted successfully!</p>}
+      {formSubmitted && (
+        <p className="m-2 text-green-600 font-bold text-xl">
+          Form data submitted successfully!
+        </p>
+      )}
     </form>
   );
 }
