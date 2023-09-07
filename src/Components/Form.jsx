@@ -9,17 +9,25 @@ export default function Form() {
     fields: [{ name: "name", required: true, type: "text" }],
   });
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(() => {
+    const initialData = {};
+    template.fields.forEach((field) => {
+      initialData[field.name] = "";
+    });
+    return initialData;
+  });
+
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   async function fetchTemplate() {
     try {
       const res = await fetch(`https://formflow-server.onrender.com/form/${id}`);
+      console.log("Response status:", res.status);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await res.json();
-      console.log(data);
+      console.log("Data received:", data);
       setTemplate(data);
     } catch (error) {
       console.error("Error fetching template:", error);
@@ -69,31 +77,39 @@ export default function Form() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="m-5 p-2">
-      <div className="text-2xl font-bold mb-2">{template.heading}</div>
-      <div className="p-1 m-2">
-        {template.fields.map((item, index) => (
-          <div key={index}>
-            <label className="p-1 m-1">{item.name}</label>
-            <br />
-            <input
-              required={item.required}
-              name={item.name}
-              type={item.type}
-              value={formData[item.name] || ""}
-              onChange={handleChange}
-              className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
-            />
+    <>
+      {template.heading && (
+        <form onSubmit={handleSubmit} className="m-5 p-2">
+          <div className="text-2xl font-bold mb-2">{template.heading}</div>
+          <div className="p-1 m-2">
+            {Object.values(template).map((item, index) => (
+              <div key={index}>
+                <label className="p-1 m-1">{item.name}</label>
+                <br />
+                <input
+                  required={item.required}
+                  name={item.name}
+                  type={item.type}
+                  value={formData[item.name] || ""}
+                  onChange={handleChange}
+                  className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-500 px-2 py-1 border rounded-md text-white hover:bg-yellow-400 hover:text-black"
-      >
-        Submit
-      </button>
-      {formSubmitted && <p className="m-2 text-green-600 font-bold text-xl">Form data submitted successfully!</p>}
-    </form>
+          <button
+            type="submit"
+            className="bg-blue-500 px-2 py-1 border rounded-md text-white hover:bg-yellow-400 hover:text-black"
+          >
+            Submit
+          </button>
+          {formSubmitted && (
+            <p className="m-2 text-green-600 font-bold text-xl">
+              Form data submitted successfully!
+            </p>
+          )}
+        </form>
+      )}
+    </>
   );
 }
