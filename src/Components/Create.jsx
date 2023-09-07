@@ -47,7 +47,7 @@ export default function Create() {
     const token = localStorage.getItem("token");
 
     // Make a POST request to the server with the form data and JWT token
-    fetch("http://localhost:3000/users/data", {
+    fetch("https://formflow-server.onrender.com/users/data", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

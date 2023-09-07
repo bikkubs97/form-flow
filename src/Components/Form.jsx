@@ -14,7 +14,7 @@ export default function Form() {
 
   async function fetchTemplate() {
     try {
-      const res = await fetch(`http://localhost:3000/form/${id}`);
+      const res = await fetch(`https://formflow-server.onrender.com/form/${id}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

@@ -50,7 +50,7 @@ export default function SignIn() {
     try {
       // server end point used is from one of my old project, food fiesta
       const response = await fetch(
-        "https://foofiesta-server-j46h.onrender.com/users/",
+        "https://formflow-server.onrender.com/users/",
         {
           headers: {
             Authorization: `Bearer ${token}`,

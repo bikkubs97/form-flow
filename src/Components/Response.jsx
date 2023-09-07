@@ -11,7 +11,7 @@ export default function Response() {
         throw new Error('Access token not found');
       }
 
-      const response = await fetch('http://localhost:3000/responses', {
+      const response = await fetch('https://formflow-server.onrender.com/responses', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`, // Use the retrieved token

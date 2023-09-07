@@ -18,17 +18,14 @@ export default function SignUp() {
     setMessage("Please Wait...");
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/users",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: username,
-            password: password,
-          }),
-        }
-      );
+      const response = await fetch("https://formflow-server.onrender.com/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: username,
+          password: password,
+        }),
+      });
 
       if (response.status === 201) {
         console.log("success");
@@ -99,7 +96,7 @@ export default function SignUp() {
         </button>
       </div>
       <div className="w-1/2 h-full mt-5 ml-5">
-        <img src="form.png"  alt="form" />
+        <img src="form.png" alt="form" />
       </div>
     </div>
   );
