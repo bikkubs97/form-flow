@@ -146,7 +146,6 @@ app.post("/users/responses/:id", async (req, res) => {
       return res.status(404).send("User or data not found");
     }
 
-    y;
     const formData = req.body;
 
     user.responses.push(formData);
