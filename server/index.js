@@ -33,7 +33,7 @@ function generateUniqueId() {
   return uuidv4();
 }
 
-app.put("/users/data", authenticateToken, async (req, res) => {
+app.post("/users/data", authenticateToken, async (req, res) => {
   try {
     const userName = req.name;
     const newFormData = req.body;

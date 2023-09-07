@@ -10,43 +10,7 @@ export default function Create() {
     fields: [],
   });
 
-  useEffect(() => {
-    // When the component loads, initialize the formData with the default values
-    setFormData({
-      heading: "",
-      fields: fields.map((field) => ({ ...field })),
-    });
-  }, []);
-
-  useEffect(() => {
-    // This effect handles submitting the form data to the server when formData changes
-    if (!id) return; // Don't make the request if id is not set
-    // Get the JWT token from local storage
-    const token = localStorage.getItem("token");
-    // Make a POST request to the server with the form data and JWT token
-    fetch("https://formflow-server.onrender.com/users/data", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Server response:", data);
-        setId(data.id); // Set the id after successful response
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  }, [formData, id]);
-
+ 
   function handleAddField() {
     const newFields = [...fields, { name: "", required: false, type: "text" }];
     setFields(newFields);
@@ -84,7 +48,7 @@ export default function Create() {
     const token = localStorage.getItem("token");
     // Make a POST request to generate the URL
     fetch("https://formflow-server.onrender.com/users/data", {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
