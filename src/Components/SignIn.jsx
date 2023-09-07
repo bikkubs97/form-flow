@@ -1,7 +1,5 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-
 
 export default function SignIn() {
   const [state, setState] = useState({
@@ -46,7 +44,6 @@ export default function SignIn() {
     }
   }
 
- 
   function setMessage(message) {
     setState((prevState) => ({ ...prevState, message }));
   }
@@ -102,10 +99,7 @@ export default function SignIn() {
         </button>
       </div>
       <div className="w-1/2 h-full mt-5 ml-5">
-        <img         
-          src="form.png"       
-          alt="form"
-        />
+        <img src="form.png" alt="form" />
       </div>
     </div>
   );
