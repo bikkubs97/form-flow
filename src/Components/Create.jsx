@@ -74,7 +74,7 @@ export default function Create() {
   }
 
   function handleCopyUrl() {
-    const url = `https://formflow-server.onrender.com/form/${id}`;
+    const url = `https://formflow.onrender.com/forms/${id}`;
     navigator.clipboard.writeText(url)
       .then(() => {
         alert("URL copied to clipboard");
@@ -168,7 +168,7 @@ export default function Create() {
             className="hover:cursor-pointer text-blue-600 underline"
             onClick={handleCopyUrl}
           >
-            https://formflow-server.onrender.com/form/{id} (Click to Copy)
+            https://formflow.onrender.com//forms/{id} (Click to Copy)
           </span>
         </div>
       )}
