@@ -16,7 +16,7 @@ export default function SignIn() {
     setMessage("Please Wait...");
     try {
       const response = await fetch(
-        "http://localhost:3000/users/login",
+        "https://formflow-server.onrender.com/users/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -46,28 +46,7 @@ export default function SignIn() {
     }
   }
 
-  async function fetchAndSaveAdditionalData(token) {
-    try {
-      // server end point used is from one of my old project, food fiesta
-      const response = await fetch(
-        "https://formflow-server.onrender.com/users/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const fetchedData = await response.json();
-        localStorage.setItem("userData", JSON.stringify(fetchedData));
-      } else {
-        console.error("Failed to fetch additional data from the server");
-      }
-    } catch (error) {
-      console.error("An error occurred while fetching data:", error);
-    }
-  }
-
+ 
   function setMessage(message) {
     setState((prevState) => ({ ...prevState, message }));
   }
