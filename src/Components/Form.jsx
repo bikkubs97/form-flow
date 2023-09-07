@@ -49,7 +49,7 @@ export default function Form() {
 
     // Make a POST request to submit the form data to the server
     const response = await fetch(
-      `https://formflow.onrender.com/users/responses/${id}`,
+      `https://formflow-server.onrender.com/users/responses/${id}`,
       {
         method: "POST",
         headers: {
