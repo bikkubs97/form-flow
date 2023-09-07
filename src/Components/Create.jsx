@@ -48,7 +48,7 @@ export default function Create() {
     const token = localStorage.getItem("token");
     // Make a POST request to generate the URL
     fetch("https://formflow-server.onrender.com/users/data", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

@@ -82,15 +82,15 @@ export default function Form() {
         <form onSubmit={handleSubmit} className="m-5 p-2">
           <div className="text-2xl font-bold mb-2">{template.heading}</div>
           <div className="p-1 m-2">
-            {Object.values(template).map((item, index) => (
+            {template.fields.map((field, index) => (
               <div key={index}>
-                <label className="p-1 m-1">{item.name}</label>
+                <label className="p-1 m-1">{field.name}</label>
                 <br />
                 <input
-                  required={item.required}
-                  name={item.name}
-                  type={item.type}
-                  value={formData[item.name] || ""}
+                  required={field.required}
+                  name={field.name}
+                  type={field.type}
+                  value={formData[field.name] || ""}
                   onChange={handleChange}
                   className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
                 />
