@@ -72,7 +72,7 @@ export default function Form() {
     <form onSubmit={handleSubmit} className="m-5 p-2">
       <div className="text-2xl font-bold mb-2">{template.heading}</div>
       <div className="p-1 m-2">
-        {template.fields.map((item, index) => (
+        {template.fields?template.fields.map((item, index) => (
           <div key={index}>
             <label className="p-1 m-1">{item.name}</label>
             <br />
@@ -85,7 +85,7 @@ export default function Form() {
               className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
             />
           </div>
-        ))}
+        )):<p className="animate-pulse">Loading Form...</p>}
       </div>
       <button
         type="submit"
