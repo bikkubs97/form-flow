@@ -74,7 +74,7 @@ export default function Create() {
   }
 
   function handleCopyUrl() {
-    const url = `http://localhost:5173/forms/${id}`;
+    const url = `https://formflow-server.onrender.com/forms/${id}`;
     navigator.clipboard.writeText(url)
       .then(() => {
         alert("URL copied to clipboard");
