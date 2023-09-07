@@ -32,53 +32,47 @@ export default function Create() {
     setFields(updatedFields);
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const fieldsToSubmit = fields.filter((field) => field.name.trim() !== "");
-    setFormData({
-      ...formData,
-      heading: formData.heading, // Keep the existing heading
+    const dataToSend = {
+      heading: formData.heading,
       fields: fieldsToSubmit,
-    });
-    // Now, let's generate the URL here (outside of the fetch request)
-    generateURL(formData); // Pass formData to generateURL
-  }
+    };
 
-  function generateURL(formData) {
-    const token = localStorage.getItem("token");
-
-    fetch("https://formflow-server.onrender.com/users/data", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(formData), // Send the formData object
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("URL generated:", data.url);
-        setId(data.id);
-      })
-      .catch((error) => {
-        console.error("URL generation error:", error);
+    try {
+      const response = await fetch("https://formflow-server.onrender.com/users/data", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(dataToSend),
       });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      setId(responseData.id);
+      console.log("URL generated:", responseData.url);
+    } catch (error) {
+      console.error("URL generation error:", error);
+    }
   }
 
   function handleCopyUrl() {
-    const url = `https://formflow.onrender.com/forms/${id}`;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        alert("URL copied to clipboard");
-      })
-      .catch((error) => {
-        console.error("Error copying URL to clipboard: ", error);
-      });
+    if (id) {
+      const url = `https://formflow.onrender.com/forms/${id}`;
+      navigator.clipboard
+        .writeText(url)
+        .then(() => {
+          alert("URL copied to clipboard");
+        })
+        .catch((error) => {
+          console.error("Error copying URL to clipboard: ", error);
+        });
+    }
   }
 
   return (
