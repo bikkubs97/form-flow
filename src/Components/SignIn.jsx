@@ -30,8 +30,6 @@ export default function SignIn() {
         const data = await response.json();
         localStorage.setItem("token", data.token);
         setMessage("Login Successful!");
-        //fetch user data
-        await fetchAndSaveAdditionalData(data.token);
         setTimeout(() => {
           navigate("/dashboard");
         }, 100);
