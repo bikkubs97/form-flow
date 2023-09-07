@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 export default function Create() {
   const [fields, setFields] = useState([
@@ -36,13 +36,14 @@ export default function Create() {
     const fieldsToSubmit = fields.filter((field) => field.name.trim() !== "");
     setFormData({
       ...formData,
+      heading: formData.heading, // Keep the existing heading
       fields: fieldsToSubmit,
     });
     // Now, let's generate the URL here (outside of the fetch request)
-    generateURL(fieldsToSubmit);
+    generateURL(formData); // Pass formData to generateURL
   }
 
-  function generateURL(fieldsToSubmit) {
+  function generateURL(formData) {
     const token = localStorage.getItem("token");
 
     fetch("https://formflow-server.onrender.com/users/data", {
@@ -51,7 +52,7 @@ export default function Create() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(fieldsToSubmit),
+      body: JSON.stringify(formData), // Send the formData object
     })
       .then((response) => {
         if (!response.ok) {

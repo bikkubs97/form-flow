@@ -6,7 +6,7 @@ export default function Form() {
   const [template, setTemplate] = useState({
     heading: "",  
     id: null,
-    fields: [{ name: "name", required: true, type: "text" }],
+    fields: [],
   });
 
   const [formData, setFormData] = useState({});
@@ -28,7 +28,7 @@ export default function Form() {
 
   useEffect(() => {
     fetchTemplate();
-  }, [id]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,7 +72,7 @@ export default function Form() {
     <form onSubmit={handleSubmit} className="m-5 p-2">
       <div className="text-2xl font-bold mb-2">{template.heading}</div>
       <div className="p-1 m-2">
-        {template.map((item, index) => (
+        {template.fields.map((item, index) => (
           <div key={index}>
             <label className="p-1 m-1">{item.name}</label>
             <br />
