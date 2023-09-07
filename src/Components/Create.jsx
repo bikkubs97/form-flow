@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Create() {
   const [fields, setFields] = useState([
@@ -6,9 +6,46 @@ export default function Create() {
   ]);
   const [id, setId] = useState(null);
   const [formData, setFormData] = useState({
-    heading: "", // Initialize heading as an empty string
-    fields: [], // Initialize fields as an empty array
+    heading: "",
+    fields: [],
   });
+
+  useEffect(() => {
+    // When the component loads, initialize the formData with the default values
+    setFormData({
+      heading: "",
+      fields: fields.map((field) => ({ ...field })),
+    });
+  }, []);
+
+  useEffect(() => {
+    // This effect handles submitting the form data to the server when formData changes
+    if (!id) return; // Don't make the request if id is not set
+    // Get the JWT token from local storage
+    const token = localStorage.getItem("token");
+    // Make a POST request to the server with the form data and JWT token
+    fetch("https://formflow-server.onrender.com/users/data", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Server response:", data);
+        setId(data.id); // Set the id after successful response
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  }, [formData, id]);
 
   function handleAddField() {
     const newFields = [...fields, { name: "", required: false, type: "text" }];
@@ -33,49 +70,46 @@ export default function Create() {
   }
 
   function handleSubmit() {
-    // Create an array of fields that need to be submitted (e.g., filter out empty fields)
     const fieldsToSubmit = fields.filter((field) => field.name.trim() !== "");
-
-    // Update the formData with the heading and fields
     setFormData({
-      ...formData,
       heading: document.querySelector("input[name='heading']").value,
       fields: fieldsToSubmit,
     });
+    // Now, let's generate the URL here (outside of the fetch request)
+    generateURL(fieldsToSubmit);
+  }
 
+  function generateURL(fieldsToSubmit) {
     // Get the JWT token from local storage
     const token = localStorage.getItem("token");
-
-    // Make a POST request to the server with the form data and JWT token
+    // Make a POST request to generate the URL
     fetch("https://formflow-server.onrender.com/users/data", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Add the JWT token to the headers
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(formData), // Use the updated formData here
+      body: JSON.stringify(fieldsToSubmit),
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        // Handle the successful response here
         return response.json();
       })
       .then((data) => {
-        // Handle the data received from the server
-        console.log("Server response:", data);
+        console.log("URL generated:", data.url);
         setId(data.id);
       })
       .catch((error) => {
-        // Handle any errors that occurred during the fetch
-        console.error("Fetch error:", error);
+        console.error("URL generation error:", error);
       });
   }
 
   function handleCopyUrl() {
     const url = `https://formflow.onrender.com/forms/${id}`;
-    navigator.clipboard.writeText(url)
+    navigator.clipboard
+      .writeText(url)
       .then(() => {
         alert("URL copied to clipboard");
       })
@@ -97,7 +131,7 @@ export default function Create() {
         onChange={(e) => {
           setFormData({
             ...formData,
-            heading: e.target.value, // Update the heading in formData
+            heading: e.target.value,
           });
         }}
       />
