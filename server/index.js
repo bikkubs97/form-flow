@@ -41,10 +41,9 @@ app.put("/users/data", authenticateToken, async (req, res) => {
     const templateId = generateUniqueId();
     const formDataWithId = {
       id: templateId,
-      ...newFormData, // Include all the fields from the front end data object
+      ...newFormData,
     };
 
-    // Update the user's data array with the new form data object using $push
     const updatedUser = await formUser.findOneAndUpdate(
       { name: userName },
       { $push: { data: formDataWithId } },
@@ -55,36 +54,30 @@ app.put("/users/data", authenticateToken, async (req, res) => {
       return res.status(404).send("User not found");
     }
 
-    res.status(201).json({ id: templateId }); // Send the generated ID in the response with a 201 status code (Created)
+    res.status(201).json({ id: templateId });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Error adding user data");
   }
 });
 
-app.get('/responses', authenticateToken, async (req, res) => {
+app.get("/responses", authenticateToken, async (req, res) => {
   try {
     const userName = req.name;
-
-    // Assuming you want to retrieve the 'responses' property for a specific user
     const user = await formUser.findOne({ name: userName });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const responses = user.responses;
 
-    // Assuming you want to send the responses as a JSON response
     res.json(responses);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-
 
 app.post("/users", async (req, res) => {
   try {
@@ -124,21 +117,18 @@ app.get("/form/:id", async (req, res) => {
   try {
     const formId = req.params.id;
 
-    // Find the user who has the matching form data
     const user = await formUser.findOne({ "data.id": formId });
 
     if (!user) {
       return res.status(404).json({ error: "Form not found" });
     }
 
-    // Find the specific form data object with the matching ID
     const formData = user.data.find((data) => data.id === formId);
 
     if (!formData) {
       return res.status(404).json({ error: "Form not found" });
     }
 
-    // Send the form data as a JSON response
     res.json(formData);
   } catch (error) {
     console.error(error);
@@ -146,27 +136,21 @@ app.get("/form/:id", async (req, res) => {
   }
 });
 
-
-
 app.post("/users/responses/:id", async (req, res) => {
   try {
-    // Extract the Data ID from the URL parameters
     const dataId = req.params.id;
 
-    // Find the user who has the specified data ID in their 'data' array
     const user = await formUser.findOne({ "data.id": dataId });
 
     if (!user) {
       return res.status(404).send("User or data not found");
     }
 
-    // Extract the form data from the request body
-    const formData = req.body; // Assuming your form data is in the request body
+    y;
+    const formData = req.body;
 
-    // Push the form data into the user's 'responses' array
     user.responses.push(formData);
 
-    // Save the updated user document
     await user.save();
 
     res.status(200).json({ message: "Form data submitted successfully" });
