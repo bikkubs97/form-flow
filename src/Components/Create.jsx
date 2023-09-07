@@ -10,7 +10,6 @@ export default function Create() {
     fields: [],
   });
 
- 
   function handleAddField() {
     const newFields = [...fields, { name: "", required: false, type: "text" }];
     setFields(newFields);
@@ -36,7 +35,7 @@ export default function Create() {
   function handleSubmit() {
     const fieldsToSubmit = fields.filter((field) => field.name.trim() !== "");
     setFormData({
-      heading: document.querySelector("input[name='heading']").value,
+      ...formData,
       fields: fieldsToSubmit,
     });
     // Now, let's generate the URL here (outside of the fetch request)
@@ -44,9 +43,8 @@ export default function Create() {
   }
 
   function generateURL(fieldsToSubmit) {
-    // Get the JWT token from local storage
     const token = localStorage.getItem("token");
-    // Make a POST request to generate the URL
+
     fetch("https://formflow-server.onrender.com/users/data", {
       method: "PUT",
       headers: {
@@ -92,6 +90,7 @@ export default function Create() {
         type="text"
         name="heading"
         className="m-1 p-1 border border-blue-900 rounded-md"
+        value={formData.heading}
         onChange={(e) => {
           setFormData({
             ...formData,
