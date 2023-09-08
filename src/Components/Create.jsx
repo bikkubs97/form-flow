@@ -40,14 +40,17 @@ export default function Create() {
     };
 
     try {
-      const response = await fetch("https://formflow-server.onrender.com/users/data", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await fetch(
+        "https://formflow-server.onrender.com/users/data",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Network response was not ok");

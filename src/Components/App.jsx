@@ -5,6 +5,7 @@ import SignIn from "./SignIn";
 import Dashboard from "./Dashboard";
 import Create from "./Create";
 import Response from "./Response";
+import Myforms from "./Myforms";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<Create />} />
           <Route path="create" element={<Create />} />
+          <Route path="myforms" element={<Myforms />} />
           <Route path="response" element={<Response />} />
         </Route>
         <Route path="/forms/:id" element={<Form />} />

@@ -61,6 +61,53 @@ app.put("/users/data", authenticateToken, async (req, res) => {
   }
 });
 
+app.put("/users/data/:id", authenticateToken, async (req, res) => {
+  try {
+    const userName = req.name;
+    const newFormData = req.body;
+    const templateId = req.params.id; // Get the form ID from the URL parameter
+
+    const updatedUser = await formUser.findOneAndUpdate(
+      { name: userName, "data.id": templateId }, // Find the user and the specific form by ID
+      { $set: { "data.$": newFormData } }, // Update the specific form
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send("User or form not found");
+    }
+
+    res.status(200).json({ id: templateId });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Error updating form data");
+  }
+});
+
+app.delete("/users/data/:id", authenticateToken, async (req, res) => {
+  try {
+    const userName = req.name;
+    const templateId = req.params.id; // Get the form ID from the URL parameter
+
+    const updatedUser = await formUser.findOneAndUpdate(
+      { name: userName },
+      { $pull: { data: { id: templateId } } }, // Remove the specific form by ID
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send("User or form not found");
+    }
+
+    res.status(200).json({ id: templateId });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Error deleting form data");
+  }
+});
+
+
+
 app.get("/responses", authenticateToken, async (req, res) => {
   try {
     const userName = req.name;
@@ -94,6 +141,24 @@ app.post("/users", async (req, res) => {
     res.status(500).send("error");
   }
 });
+
+app.get("/form", authenticateToken, async (req, res) => {
+  try {
+    const user = await formUser.findOne({ name: req.name }); // Find the user by name
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const formData = user.data; // Get all the forms for the user
+
+    res.json(formData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 app.post("/users/login", async (req, res) => {
   try {

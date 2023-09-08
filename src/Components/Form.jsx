@@ -11,22 +11,40 @@ export default function Form() {
 
   const [formData, setFormData] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [notFound, setNotFound] = useState(false); // Add notFound state
 
   async function fetchTemplate() {
     try {
       const res = await fetch(
         `https://formflow-server.onrender.com/form/${id}`
       );
-      if (!res.ok) {
+  
+      console.log("Response status:", res.status); // Add this line for debugging
+  
+      if (res.status === 404) {
+        setNotFound(true); // Set notFound to true for 404 response
+        setLoading(false); // Set loading to false
+        return;
+      }
+  
+      if (!res.ok) {       
+        setNotFound(true)
         throw new Error("Network response was not ok");
       }
+  
       const data = await res.json();
       console.log(data);
       setTemplate(data);
+      setLoading(false); // Set loading to false when data is received
     } catch (error) {
       console.error("Error fetching template:", error);
+      setLoading(false); // Set loading to false on error
     }
   }
+  
+
+
 
   useEffect(() => {
     fetchTemplate();
@@ -72,37 +90,44 @@ export default function Form() {
 
   return (
     <form onSubmit={handleSubmit} className="m-5 p-2">
-      <div className="text-2xl font-bold mb-2">{template.heading}</div>
-      <div className="p-1 m-2">
-        {template.fields.length > 0 ? (
-          template.fields.map((item, index) => (
-            <div key={index}>
-              <label className="p-1 m-1">{item.name}</label>
-              <br />
-              <input
-                required={item.required}
-                name={item.name}
-                type={item.type}
-                value={formData[item.name] || ""}
-                onChange={handleChange}
-                className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
-              />
-            </div>
-          ))
-        ) : (
-          <p className="animate-pulse">Loading Form...</p>
-        )}
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-500 px-2 py-1 border rounded-md text-white hover:bg-yellow-400 hover:text-black"
-      >
-        Submit
-      </button>
-      {formSubmitted && (
-        <p className="m-2 text-green-600 font-bold text-xl">
-          Form data submitted successfully!
-        </p>
+      {notFound ? ( // Display "Not Found" for 404 response
+        <p className="text-red-600 font-bold">Form Not Found</p>
+      ) : (
+        <>
+          <div className="text-2xl font-bold mb-2">{template.heading}</div>
+          <div className="p-1 m-2">
+            {loading ? ( // Check if loading
+              <p className="animate-pulse">Loading Form...</p>
+            ) : template.fields.length > 0 ? (
+              template.fields.map((item, index) => (
+                <div key={index}>
+                  <label className="p-1 m-1">{item.name}</label>
+                  <br />
+                  <input
+                    required={item.required}
+                    name={item.name}
+                    type={item.type}
+                    value={formData[item.name] || ""}
+                    onChange={handleChange}
+                    className="p-1 m-1 border border-blue-800 rounded-md w-1/2"
+                  />
+                </div>
+              ))
+            ) : (
+              <button
+                type="submit"
+                className="bg-blue-500 px-2 py-1 border rounded-md text-white hover:bg-yellow-400 hover:text-black"
+              >
+                Submit
+              </button>
+            )}
+          </div>
+          {formSubmitted && (
+            <p className="m-2 text-green-600 font-bold text-xl">
+              Form data submitted successfully!
+            </p>
+          )}
+        </>
       )}
     </form>
   );
