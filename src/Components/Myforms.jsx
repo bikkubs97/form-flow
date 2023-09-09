@@ -96,7 +96,7 @@ export default function MyForms() {
   return (
     <div>
       <div>
-        {submittedTemplates.map(function renderTemplate(
+        {submittedTemplates.length>0?submittedTemplates.map(function renderTemplate(
           template,
           templateIndex
         ) {
@@ -212,7 +212,7 @@ export default function MyForms() {
               </form>
             </div>
           );
-        })}
+        }):<p className="ml-2">You have no froms, create one.</p>}
       </div>
     </div>
   );
