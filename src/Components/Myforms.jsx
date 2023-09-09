@@ -212,7 +212,7 @@ export default function MyForms() {
               </form>
             </div>
           );
-        }):<p className="ml-2">You have no froms, create one.</p>}
+        }):<p className="m-2">You have no froms, create one.</p>}
       </div>
     </div>
   );
