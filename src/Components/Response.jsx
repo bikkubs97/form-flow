@@ -51,7 +51,7 @@ export default function Response() {
             </p>
           ))}
         </div>
-      )):<p>No responses yet</p>}
+      )):<p className="ml-2">No responses yet</p>}
     </div>
   );
 }
