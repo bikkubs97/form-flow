@@ -39,9 +39,9 @@ export default function Response() {
   return (
     <div className="m-4">
       <h2 className="font-bold text-2xl text-blue-600 m-2 mb-4">Responses</h2>
-      {responseData.map((item, index) => (
+      {responseData.length>0?responseData.map((item, index) => (
         <div
-          className="m-2 p-4 border bg-purple-200  text-black border-purple-400 rounded-md"
+          className="m-2 p-4 border bg-purple-50  text-black border-black rounded-md"
           key={index}
         >
           <h1 className="text-2xl font-bold m-2">{item.heading}</h1>
@@ -51,7 +51,7 @@ export default function Response() {
             </p>
           ))}
         </div>
-      ))}
+      )):<p>No responses yet</p>}
     </div>
   );
 }

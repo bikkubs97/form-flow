@@ -102,7 +102,7 @@ export default function MyForms() {
         ) {
           return (
             <div
-              className="border border-black m-4 p-4 rounded-md"
+              className="border border-black m-4 p-4 rounded-md bg-purple-50"
               key={template.id}
             >
               <h2 className="font-bold text-2xl">{template.heading}</h2>
