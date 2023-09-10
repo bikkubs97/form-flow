@@ -15,7 +15,7 @@ export default function SignUp() {
       return;
     }
 
-    setMessage("Please Wait...");
+    setMessage("Please Wait, It may take few minutes...");
 
     try {
       const response = await fetch(
