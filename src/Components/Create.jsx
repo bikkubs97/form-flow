@@ -97,7 +97,7 @@ export default function Create() {
         }}
       />
       {fields.map((field, index) => (
-        <div className="bg-purple-200 my-2 p-4 rounded-md" key={index}>
+        <div className="bg-indigo-200 my-2 p-4 rounded-lg shadow-md" key={index}>
           <label className="p-2">
             Field Name:
             <input
@@ -138,7 +138,7 @@ export default function Create() {
             className="bg-red-600 px-2 text-white border rounded-md"
             onClick={() => handleRemoveField(index)}
           >
-            Remove
+           Remove
           </button>
         </div>
       ))}

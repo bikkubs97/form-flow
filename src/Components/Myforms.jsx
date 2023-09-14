@@ -102,11 +102,13 @@ export default function MyForms() {
         ) {
           return (
             <div
-              className="border border-black m-4 p-4 rounded-md bg-purple-50"
+              className="border rounded-md m-4 p-4 shadow bg-indigo-200"
               key={template.id}
             >
               <h2 className="font-bold text-2xl">{template.heading}</h2>
-              <form>
+              <div className="my-4">
+              <a className="cursor-pointer hover:text-blue-950"> https://formflow.onrender.com/forms/{template.id}</a><br/>
+              </div><form>
                 {template.fields.map(function renderField(field, fieldIndex) {
                   return (
                     <div key={fieldIndex}>
@@ -148,7 +150,7 @@ export default function MyForms() {
                         <select
                           name={`fieldType-${templateIndex}-${fieldIndex}`}
                           value={field.type}
-                          className="bg-blue-500 border rounded-md m-2"
+                          className="bg-blue-500 border rounded-md m-2 text-white"
                           onChange={function handleFieldTypeChange(e) {
                             const updatedTemplates = [...submittedTemplates];
                             updatedTemplates[templateIndex].fields[
@@ -164,6 +166,7 @@ export default function MyForms() {
                           <option value="url">Link</option>
                         </select>
                       </label>
+                     
                       <button
                         type="button"
                         className="m-2 p-1 bg-red-500 border rounded-md text-white hover:bg-yellow-400 hover:text-black"
@@ -177,7 +180,8 @@ export default function MyForms() {
                     </div>
                   );
                 })}
-
+                   
+                     
                 <button
                   className="m-2 p-1 bg-blue-500 border rounded-md text-white hover:bg-yellow-400 hover:text-black"
                   onClick={function handleAddFieldClick(e) {
